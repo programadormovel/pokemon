@@ -8,7 +8,18 @@ class Menu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var tam = MediaQuery.of(context).size;
     return (Scaffold(
+      appBar: AppBar(
+        title: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('Pokemon'),
+        ),
+        elevation: 8,
+        flexibleSpace: FlutterLogo(size: 248),
+        toolbarHeight: tam.height * 0.25,
+        
+      ),
       drawer: Drawer(
         backgroundColor: Colors.amber,
         child: Column(
