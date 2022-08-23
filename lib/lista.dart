@@ -14,24 +14,50 @@ class Lista extends StatefulWidget {
 class _ListaState extends State<Lista> {
   var listaItens = ['Pokemon1', 'Pokemon2', 'Pokemon3'];
   var lista2 = List<String>.generate(100, (i) => 'Pokemon $i');
+  var listaPesquisada = [];
 
   // Carregar lista de pokemons
-  Future<List<String>> fetchPokemon() async {
-    var uri = Uri.parse('https://pokeapi.co/api/v2/pokemon-species/aegislash');
+  Future<List> fetchPokemon() async {
+    var uri = Uri.parse('https://pokeapi.co/api/v2/pokemon');
     final response = await http.get(uri,
         headers: {'Content-Type': 'aplication/json; charset=ISO-8859-1'});
 
     var listaPokemons = new List.empty(growable: true);
 
     if (response.statusCode == 200) {
-      List<dynamic> values = json.decode(response.body);
+      // print(response.body);
+      Map<String, dynamic> values = json.decode(response.body);
+      // print(values.entries.elementAt(3));
 
-      if(values.length > 0){
-        
+      List<dynamic> valores = values.entries.elementAt(3).value;
+      print(valores);
+      if (valores.length > 0) {
+        for (int i = 0; i < valores.length; i++) {
+          if (valores[i] != null) {
+            Map<String, dynamic> map = valores[i];
+            listaPokemons.add(map['name']);
+            //print('${map['name']}');
+            print(listaPokemons[i]);
+          }
+        }
       }
     }
 
-    return null;
+    return listaPokemons;
+  }
+
+  montaLista() async {
+    listaPesquisada = await fetchPokemon();
+    print(listaPesquisada.length);
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    montaLista();
   }
 
   @override
@@ -45,14 +71,14 @@ class _ListaState extends State<Lista> {
         decoration: BoxDecoration(color: Colors.amber),
         child: ListView.builder(
           // scrollDirection: Axis.horizontal,
-          itemCount: listaItens.length,
+          itemCount: listaPesquisada.length,
           prototypeItem: ListTile(
-            title: Text(listaItens.first),
+            title: Text(listaPesquisada.first),
           ),
           itemBuilder: (context, index) {
             return ListTile(
               title: Text(
-                listaItens[index],
+                listaPesquisada[index],
                 style: TextStyle(
                   color: Colors.red,
                   fontSize: 48,
