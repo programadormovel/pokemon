@@ -4,6 +4,8 @@ import 'package:pokemon/componentes/item_lista.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:pokemon/componentes/item_lista_pokemon.dart';
+
 class Lista extends StatefulWidget {
   const Lista({Key? key}) : super(key: key);
 
@@ -15,6 +17,7 @@ class _ListaState extends State<Lista> {
   var listaItens = ['Pokemon1', 'Pokemon2', 'Pokemon3'];
   var lista2 = List<String>.generate(100, (i) => 'Pokemon $i');
   var listaPesquisada = [];
+  List<ItemListaPokemon> items = [];
 
   // Carregar lista de pokemons
   Future<List> fetchPokemon() async {
@@ -48,7 +51,15 @@ class _ListaState extends State<Lista> {
 
   montaLista() async {
     listaPesquisada = await fetchPokemon();
-    print(listaPesquisada.length);
+    // print(listaPesquisada.length);
+    items = List<ItemListaPokemon>.generate(
+      listaPesquisada.length,
+      (i) => ItemPokemon(
+          "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
+          (i + 1).toString() + ".png",
+          listaPesquisada[i]),
+    );
+
     setState(() {});
   }
 
@@ -70,20 +81,12 @@ class _ListaState extends State<Lista> {
         height: tamanhoTela.height * 0.80,
         decoration: BoxDecoration(color: Colors.amber),
         child: ListView.builder(
-          // scrollDirection: Axis.horizontal,
-          itemCount: listaPesquisada.length,
-          prototypeItem: ListTile(
-            title: Text(listaPesquisada.first),
-          ),
+          itemCount: items.length,
           itemBuilder: (context, index) {
+            final item = items[index];
             return ListTile(
-              title: Text(
-                listaPesquisada[index],
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 48,
-                ),
-              ),
+              title: item.buildImage(context),
+              subtitle: item.buildTitle(context),
             );
           },
         ),
