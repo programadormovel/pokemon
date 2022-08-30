@@ -56,7 +56,8 @@ class _ListaState extends State<Lista> {
       listaPesquisada.length,
       (i) => ItemPokemon(
           "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
-          (i + 1).toString() + ".png",
+              (i + 1).toString() +
+              ".png",
           listaPesquisada[i]),
     );
 
@@ -81,12 +82,21 @@ class _ListaState extends State<Lista> {
         height: tamanhoTela.height * 0.80,
         decoration: BoxDecoration(color: Colors.amber),
         child: ListView.builder(
+          scrollDirection: Axis.vertical,
           itemCount: items.length,
           itemBuilder: (context, index) {
             final item = items[index];
-            return ListTile(
-              title: item.buildImage(context),
-              subtitle: item.buildTitle(context),
+            return Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(32)),
+                color: Colors.white,
+                child: ListTile(
+                  title: item.buildImage(context),
+                  subtitle: item.buildTitle(context),
+                ),
+              ),
             );
           },
         ),

@@ -17,17 +17,19 @@ class ItemPokemon implements ItemListaPokemon {
   @override
   Widget buildImage(BuildContext context) => Image.network(
         this.foto.toString(),
-        width: 50,
-        height: 50,
+        width: 100,
+        height: 100,
       );
 
   @override
-  Widget buildTitle(BuildContext context) => Text(
-        titulo.toString(),
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 36,
-        ),
-        textAlign: TextAlign.center,
-      );
+  Widget buildTitle(BuildContext context) =>  Text(
+          titulo.toString(),
+          style: TextStyle(
+            color: Colors.red,
+            fontSize: 36,
+            fontStyle: FontStyle.italic,
+          ),
+          textAlign: TextAlign.center,
+        
+  );
 }
